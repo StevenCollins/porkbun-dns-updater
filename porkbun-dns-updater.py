@@ -12,6 +12,7 @@ SECRET_API_KEY = os.getenv('SECRET_API_KEY')
 API_KEY = os.getenv('API_KEY')
 ID = os.getenv('ID')
 DOMAIN = os.getenv('DOMAIN')
+LOG = os.path.realpath(__file__) + '.log'
 
 # initialize variables (so they can be verified)
 error = False
@@ -41,10 +42,10 @@ if error == False and current_ip != '' and a_record_ip != '':
     if current_ip != a_record_ip:
         edit_data = {'secretapikey': SECRET_API_KEY, 'apikey': API_KEY, 'name': 'space', 'type': 'A', 'content': current_ip, 'ttl': '600'}
         edit_response = requests.post('https://porkbun.com/api/json/v3/dns/edit/' + DOMAIN + '/' + ID, json = edit_data).json()
-        log = open('porkbun-dns-updater.log', 'a')
+        log = open(LOG, 'a')
         log.write(datetime.datetime.now().isoformat() + ' ' + 'current ip: ' + current_ip + ' a record ip: ' + a_record_ip + '\n')
         log.close()
 else:
-    log = open('porkbun-dns-updater.log', 'a')
+    log = open(LOG, 'a')
     log.write(datetime.datetime.now().isoformat() + ' error retriving IPs: current ip: ' + current_ip + ' a record ip: ' + a_record_ip + '\n')
     log.close()
