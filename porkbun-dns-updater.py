@@ -40,10 +40,10 @@ except:
 # if different, update A record using API edit
 if error == False and current_ip != '' and a_record_ip != '':
     if current_ip != a_record_ip:
-        edit_data = {'secretapikey': SECRET_API_KEY, 'apikey': API_KEY, 'name': 'space', 'type': 'A', 'content': current_ip, 'ttl': '600'}
+        edit_data = {'secretapikey': SECRET_API_KEY, 'apikey': API_KEY, 'type': 'A', 'content': current_ip, 'ttl': '600'}
         edit_response = requests.post('https://porkbun.com/api/json/v3/dns/edit/' + DOMAIN + '/' + ID, json = edit_data).json()
         log = open(LOG, 'a')
-        log.write(datetime.datetime.now().isoformat() + ' ' + 'current ip: ' + current_ip + ' a record ip: ' + a_record_ip + '\n')
+        log.write(datetime.datetime.now().isoformat() + ' ' + 'current ip: ' + current_ip + ' a record ip: ' + a_record_ip + '\n\t' + str(edit_response) + '\n')
         log.close()
 else:
     log = open(LOG, 'a')
