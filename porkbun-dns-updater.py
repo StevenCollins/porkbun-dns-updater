@@ -22,7 +22,7 @@ a_record_ip = ''
 # get current IP using API ping
 ping_data = {'secretapikey': SECRET_API_KEY, 'apikey': API_KEY}
 try:
-    ping_response = requests.post('https://porkbun.com/api/json/v3/ping', json = ping_data).json()
+    ping_response = requests.post('https://api-ipv4.porkbun.com/api/json/v3/ping', json = ping_data).json()
     current_ip = ping_response['yourIp']
 except:
     error = True
@@ -30,7 +30,7 @@ except:
 # get current A record using API retrieve
 retrieve_data = {'secretapikey': SECRET_API_KEY, 'apikey': API_KEY}
 try:
-    retrieve_response = requests.post('https://porkbun.com/api/json/v3/dns/retrieve/' + DOMAIN, json = retrieve_data).json()
+    retrieve_response = requests.post('https://api-ipv4.porkbun.com/api/json/v3/dns/retrieve/' + DOMAIN, json = retrieve_data).json()
     for record in retrieve_response['records']:
         if record['id'] == ID:
             a_record_ip = record['content']
@@ -41,7 +41,7 @@ except:
 if error == False and current_ip != '' and a_record_ip != '':
     if current_ip != a_record_ip:
         edit_data = {'secretapikey': SECRET_API_KEY, 'apikey': API_KEY, 'type': 'A', 'content': current_ip, 'ttl': '600'}
-        edit_response = requests.post('https://porkbun.com/api/json/v3/dns/edit/' + DOMAIN + '/' + ID, json = edit_data).json()
+        edit_response = requests.post('https://api-ipv4.porkbun.com/api/json/v3/dns/edit/' + DOMAIN + '/' + ID, json = edit_data).json()
         log = open(LOG, 'a')
         log.write(datetime.datetime.now().isoformat() + ' ' + 'current ip: ' + current_ip + ' a record ip: ' + a_record_ip + '\n\t' + str(edit_response) + '\n')
         log.close()
